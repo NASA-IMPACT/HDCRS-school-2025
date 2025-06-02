@@ -1,0 +1,4 @@
+terratorch==1.0.1
+gdown
+tensorboard
+sagemaker-training
