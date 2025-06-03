@@ -59,6 +59,7 @@ def load_model():
 
 MODELS = load_model()
 
+
 def download_files(infer_date, layer, bounding_box):
     downloader = Downloader(infer_date, layer)
     return downloader.download_tiles(bounding_box)
@@ -172,7 +173,7 @@ def infer(model_id, infer_date, bounding_box):
                     'dtype': 'float32'
                 })
                 with memfile.open(**profile) as memoryfile:
-                    memoryfile.write(results[index], 1)
+                    memoryfile.write(results[index][0], 1)
                     print(index, results[index].min(), results[index].max())
                 memory_files.append(memfile.open())
 
