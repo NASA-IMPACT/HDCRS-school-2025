@@ -5,13 +5,9 @@
 set +e
 
 # Configuration variables
-REPOSITORY_NAME="ESA-NASA-workshop-2025"
+REPOSITORY_NAME="HDCRS-school-2025"
 REPOSITORY_URL="https://github.com/NASA-IMPACT/${REPOSITORY_NAME}.git"
 REPOSITORY_PATH="/home/sagemaker-user/${REPOSITORY_NAME}"
-
-PRITHVI_WX_WEIGHTS_DIR="${REPOSITORY_PATH}/Track 1 (EO)/Prithvi-WX/data/weights/"
-PRITHVI_WX_WEIGHTS_FILE="${PRITHVI_WX_WEIGHTS_DIR}/prithvi.wxc.rollout.600m.v1.pt"
-PRITHVI_WX_WEIGHTS_URL="https://www.nsstc.uah.edu/data/sujit.roy/demo/consolidated.pth"
 
 # Log messages with timestamps
 log() {
@@ -39,53 +35,6 @@ clone_repository() {
     return 0
 }
 
-# Download weather model weights
-download_weather_model() {
-    log "Downloading weather model weights"
-    mkdir -p "$PRITHVI_WX_WEIGHTS_DIR"
-
-    if [[ -f "$PRITHVI_WX_WEIGHTS_FILE" ]]; then
-        log "Weather model weights already downloaded"
-    else
-        log "Downloading weather model weights from $PRITHVI_WX_WEIGHTS_URL"
-        wget -O "$PRITHVI_WX_WEIGHTS_FILE" "$PRITHVI_WX_WEIGHTS_URL" --no-check-certificate
-        if [[ $? -ne 0 ]]; then
-            log "ERROR: Failed to download weather model weights"
-            return 1
-        fi
-        log "Weather model weights downloaded successfully"
-    fi
-    return 0
-}
-
-# Setup for Prithvi-WX environment
-setup_weather_environment() {
-    log "Setting up Prithvi-WxC"
-
-    # Check if Prithvi-WxC is already cloned
-    if [[ ! -d "Prithvi-WxC" ]]; then
-        git clone https://github.com/NASA-IMPACT/Prithvi-WxC.git
-        if [[ $? -ne 0 ]]; then
-            log "ERROR: Failed to clone Prithvi-WxC repository"
-            return 1
-        fi
-    fi
-
-    # Install Prithvi-WxC
-    cd Prithvi-WxC
-    pip install ".[example]"
-    if [[ $? -ne 0 ]]; then
-        log "ERROR: Failed to install Prithvi-WxC"
-        cd ..
-        return 1
-    fi
-    cd ..
-
-    # Download model weights
-    download_weather_model
-
-    return 0
-}
 
 # Create and setup conda environment
 create_conda_env() {
