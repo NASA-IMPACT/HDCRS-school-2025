@@ -1,7 +1,7 @@
 # Part of the implementation of this container is based on the Amazon SageMaker Apache MXNet container.
 # https://github.com/aws/sagemaker-mxnet-container
 
-FROM nvidia/cuda:12.9.0-base-ubuntu22.04
+FROM nvidia/cuda:12.1.1-base-ubuntu22.04
 
 LABEL maintainer="NASA IMPACT"
 
@@ -23,9 +23,7 @@ RUN pip3 install --upgrade pip
 
 COPY requirements-inference.txt requirements.txt
 
-RUN pip3 install -r requirements.txt
-
-ENV CUDA_VISIBLE_DEVICES=0,1,2
+RUN pip3 install -r requirements.txt --ignore-installed
 
 ENV CUDA_HOME=/usr/local/cuda
 
@@ -37,6 +35,10 @@ COPY code /opt/program
 ENV PYTHONUNBUFFERED=TRUE
 ENV PYTHONDONTWRITEBYTECODE=TRUE
 ENV PATH="/opt/program:${PATH}"
+
+RUN mkdir -p /var/log/nginx && \
+    touch /var/log/nginx/access.log /var/log/nginx/error.log && \
+    chmod -R 777 /var/log/nginx
 
 # Copies code under /opt/ml/code where sagemaker-containers expects to find the script to run
 WORKDIR /opt/program
