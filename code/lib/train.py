@@ -17,7 +17,9 @@ def train():
     print(f'\n config file: {config_file}')
 
     # download and prepare data for training:
-    for split in ['training', 'validation', 'test', 'configs']:
+    splits = ['training', 'validation', 'test', 'configs']
+    splits = os.environ.get('splits', splits)
+    for split in splits:
         download_data(os.environ.get('S3_URL'), split)
 
     # set random seeds
