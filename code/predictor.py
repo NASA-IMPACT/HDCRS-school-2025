@@ -146,9 +146,7 @@ def infer(model_id, infer_date, bounding_box):
     for layer in LAYERS:
         tiles = download_files(infer_date, layer, bounding_box)
         for tile in tiles:
-            tile_name = tile
-            if model_id == 'burn':
-                tile_name = tile_name.replace('.tif', '_scaled.tif')
+            tile_name = tile_name.replace('.tif', '_scaled.tif')
             all_tiles.append(tile_name)
 
     start_time = time.time()
@@ -178,8 +176,7 @@ def infer(model_id, infer_date, bounding_box):
                 memory_files.append(memfile.open())
 
             mosaic, transform = merge(memory_files)
-            # for index in range(len(mosaic)):
-            #     mosaic[index] = binary_closing(mosaic[index], disk(6))
+
             [memfile.close() for memfile in memory_files]
             prediction_filename = f"predictions/{start_time}-predictions.tif"
 
