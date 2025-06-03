@@ -2,8 +2,8 @@ import boto3
 import os
 from os import path
 from glob import glob
+from lib.consts import BUCKET_NAME
 
-BUCKET_NAME = os.environ['S3_URL'].split('/')[2]
 MODEL_PATH = "models/{model_name}"
 
 
