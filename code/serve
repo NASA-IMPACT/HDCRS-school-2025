@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.11
 
 # This file implements the scoring service shell. You don't necessarily need to modify it for various
 # algorithms. It starts nginx and gunicorn with the correct configurations and then simply waits until
@@ -12,6 +12,24 @@
 # ---------                --------------------              -------------
 # number of workers        MODEL_SERVER_WORKERS              the number of CPU cores
 # timeout                  MODEL_SERVER_TIMEOUT              60 seconds
+
+import os
+import sys
+import time # For timestamps
+
+# --- VERY FIRST EXECUTABLE LINES ---
+print(f"{time.time()}: SERVE_SCRIPT_DEBUG: Starting execution of /opt/program/serve.", file=sys.stderr, flush=True)
+print(f"{time.time()}: SERVE_SCRIPT_DEBUG: Python version: {sys.version}", file=sys.stderr, flush=True)
+print(f"{time.time()}: SERVE_SCRIPT_DEBUG: Current User ID: {os.geteuid()}", file=sys.stderr, flush=True)
+print(f"{time.time()}: SERVE_SCRIPT_DEBUG: Working Directory: {os.getcwd()}", file=sys.stderr, flush=True)
+env_vars_for_debug = {k: v for k, v in os.environ.items() if 'SAGEMAKER_' in k or 'AWS_' in k or 'MODEL_SERVER_' in k}
+print(f"{time.time()}: SERVE_SCRIPT_DEBUG: Key Environment Variables: {env_vars_for_debug}", file=sys.stderr, flush=True)
+# Check critical file existence
+critical_files = ["/opt/program/nginx.conf", "/opt/program/wsgi.py"] # Add any other crucial files
+for f_path in critical_files:
+    print(f"{time.time()}: SERVE_SCRIPT_DEBUG: Checking file {f_path} - Exists: {os.path.exists(f_path)}", file=sys.stderr, flush=True)
+print(f"{time.time()}: SERVE_SCRIPT_DEBUG: Initial checks complete. Proceeding with imports and function definitions.", file=sys.stderr, flush=True)
+# --- END OF VERY EARLY PRINTS ---
 
 import multiprocessing
 import os
@@ -50,7 +68,7 @@ def start_server():
                                  '-b', 'unix:/tmp/gunicorn.sock',
                                  '-w', '1',
                                  '--worker-class', 'uvicorn.workers.UvicornWorker',
-                                 'main:app'])
+                                 'predictor:app'])
 
     signal.signal(signal.SIGTERM, lambda a, b: sigterm_handler(nginx.pid, gunicorn.pid))
 
