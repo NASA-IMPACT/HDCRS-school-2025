@@ -1,7 +1,8 @@
+boto3
 terratorch==1.0.1
 gdown
 tensorboard
 sagemaker
 huggingface_hub
-diffusers==0.30.0
+diffusers["torch"]==0.30.0
 sagemaker-training
