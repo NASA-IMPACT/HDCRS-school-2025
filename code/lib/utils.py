@@ -2,7 +2,7 @@ import boto3
 import os
 from os import path
 from glob import glob
-from lib.consts import BUCKET_NAME
+from consts import BUCKET_NAME
 
 MODEL_PATH = "models/{model_name}"
 
@@ -20,17 +20,15 @@ def download_data(data, split):
     session = assumed_role_session()
     s3_connection = session.resource('s3')
     splits = data.split('/')
-    bucket_name = splits[2]
-    bucket = s3_connection.Bucket(bucket_name)
+    bucket = s3_connection.Bucket(BUCKET_NAME)
     objects = list(bucket.objects.filter(Prefix="/".join(splits[3:] + [split])))
-    print("Downloading files.")
+    print("Downloading files:", data, split)
     for iter_object in objects:
         splits = iter_object.key.split('/')
         if splits[-1]:
             filename = f"{split_folder}/{splits[-1]}"
             bucket.download_file(iter_object.key, filename)
     print("Finished downloading files.")
-
 
 
 def save_model_artifacts(s3_connection, model_artifacts_path):

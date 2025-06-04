@@ -17,8 +17,8 @@ def train():
     print(f'\n config file: {config_file}')
 
     # download and prepare data for training:
-    splits = ['training', 'validation', 'test', 'configs']
-    splits = os.environ.get('splits', splits)
+    splits = 'training,validation,test,configs'
+    splits = os.environ.get('SPLITS', splits).split(',')
     for split in splits:
         download_data(os.environ.get('S3_URL'), split)
 
