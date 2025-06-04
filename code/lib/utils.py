@@ -34,7 +34,7 @@ def download_data(data, split):
 def save_model_artifacts(s3_connection, model_artifacts_path):
     if path.exists(model_artifacts_path):
         print(glob(f"{model_artifacts_path}"))
-        for model_file in glob(f"{model_artifacts_path}/best-epoch*"):
+        for model_file in glob(f"{model_artifacts_path}/best*"):
             model_name = model_file.split('/')[-1]
             model_name = os.environ.get('MODEL_NAME', model_name)
             model_name = MODEL_PATH.format(model_name=model_name)
