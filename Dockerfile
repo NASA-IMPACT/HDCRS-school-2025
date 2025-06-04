@@ -37,5 +37,7 @@ COPY code/lib/train.py /opt/ml/code/train.py
 
 COPY code/lib/utils.py /opt/ml/code/utils.py
 
+COPY code/lib/consts.py /opt/ml/code/consts.py
+
 # Defines train.py as script entry point
 ENV SAGEMAKER_PROGRAM /opt/ml/code/train.py
