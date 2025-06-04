@@ -3,4 +3,5 @@ gdown
 tensorboard
 sagemaker
 huggingface_hub
+diffusers==0.30.0
 sagemaker-training
