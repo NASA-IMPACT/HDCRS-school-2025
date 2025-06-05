@@ -51,7 +51,9 @@ class Infer:
         imgs_tensor = imgs_tensor.float()
 
         # increase dimensions to match input size
-        processed_images = imgs_tensor.unsqueeze(2)
+        processed_images = imgs_tensor
+        if not(terramind):
+            processed_images = imgs_tensor.unsqueeze(2)
         return processed_images, profiles
 
     def infer(self, images, terramind=False):

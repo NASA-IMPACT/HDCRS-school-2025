@@ -148,6 +148,7 @@ def infer(model_id, infer_date, bounding_box, terramind=False, file_links=[]):
     if terramind:
         for file_link in file_links:
             all_tiles.append(download_from_s3(file_link, '/opt/ml/data/'))
+            all_tiles.append(download_from_s3(file_link, '/opt/ml/data'))
     else:
         for layer in LAYERS:
             tiles = download_files(infer_date, layer, bounding_box)
