@@ -15,6 +15,7 @@ from fastapi.responses import JSONResponse
 
 from lib.downloader import DOWNLOAD_FOLDER, Downloader
 from lib.infer import Infer
+from lib.infer_generation import InferGeneration
 from lib.post_process import PostProcess
 from lib.consts import BUCKET_NAME, LAYERS
 from lib.utils import assumed_role_session
@@ -202,7 +203,10 @@ def infer(model_id, infer_date, bounding_box):
 @app.post('/invocations')
 async def infer_from_model(request: Request):
     instances = await request.json()
-
+    if instances['generation']:
+        infer = InferGeneration(instances['input_file'])
+        pred = infer.tiled_infer(reduce=instances.get('reduce', True))
+        return JSONResponse(content=jsonable_encoder(pred))
     model_id = USECASE
     infer_date = instances['date']
     bounding_box = instances['bounding_box']

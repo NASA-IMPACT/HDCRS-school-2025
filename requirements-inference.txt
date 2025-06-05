@@ -2,7 +2,8 @@ torch
 torchvision
 rasterio
 huggingface_hub
-terratorch
+diffusers
+git+https://github.com/IBM/terratorch.git
 tqdm
 fastapi
 gunicorn
