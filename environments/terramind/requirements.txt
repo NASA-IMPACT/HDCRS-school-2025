@@ -4,5 +4,6 @@ gdown
 tensorboard
 sagemaker
 huggingface_hub
+leafmap
 diffusers["torch"]==0.30.0
 sagemaker-training
