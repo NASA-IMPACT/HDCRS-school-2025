@@ -135,6 +135,7 @@ def batch(tiles, spacing=60):
     for tile in range(0, length, spacing):
         yield tiles[tile : min(tile + spacing, length)]
 
+
 def infer(model_id, infer_date, bounding_box, terramind=False, file_links=[]):
     if model_id not in MODELS:
         response = {'statusCode': 422}
@@ -207,20 +208,17 @@ def infer(model_id, infer_date, bounding_box, terramind=False, file_links=[]):
 @app.post('/invocations')
 async def infer_from_model(request: Request):
     instances = await request.json()
-    if instances['generation']:
-        infer = InferGeneration(instances['input_file'])
-        pred = infer.tiled_infer(reduce=instances.get('reduce', True))
+    if instances.get('generation'):
+        inferance = InferGeneration(instances['input_file'])
+        pred = inferance.tiled_infer(reduce=instances.get('reduce', True))
         return JSONResponse(content=jsonable_encoder(pred))
     model_id = USECASE
-    infer_date = instances['date']
-    bounding_box = instances['bounding_box']
-    final_geojson = infer(
-            model_id,
-            infer_date,
-            bounding_box,
-            terramind=instances.get('terramind', False),
-            file_links=instances.get('file_urls', [])
-        )
+    infer_date = instances.get('date')
+    bounding_box = instances.get('bounding_box')
+    terramind = instances.get('terramind', False)
+    file_links = instances.get('file_urls', [])
+    print(instances)
+    final_geojson = infer(model_id, infer_date, bounding_box, terramind=terramind, file_links=file_links)
     return JSONResponse(content=jsonable_encoder(final_geojson))
 
 @app.get('/ping')
