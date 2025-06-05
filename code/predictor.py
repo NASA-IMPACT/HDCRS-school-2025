@@ -135,7 +135,7 @@ def batch(tiles, spacing=60):
     for tile in range(0, length, spacing):
         yield tiles[tile : min(tile + spacing, length)]
 
-def infer(model_id, infer_date, bounding_box):
+def infer(model_id, infer_date, bounding_box, terramind=False, file_links=[]):
     if model_id not in MODELS:
         response = {'statusCode': 422}
         return JSONResponse(content=jsonable_encoder(response))
@@ -144,11 +144,15 @@ def infer(model_id, infer_date, bounding_box):
     geojson_list = list()
     geojson = {'type': 'FeatureCollection', 'features': []}
 
-    for layer in LAYERS:
-        tiles = download_files(infer_date, layer, bounding_box)
-        for tile in tiles:
-            tile_name = tile.replace('.tif', '_scaled.tif')
-            all_tiles.append(tile_name)
+    if terramind:
+        for file_link in file_links:
+            all_tiles.append(download_from_s3(file_link, '/opt/ml/data/'))
+    else:
+        for layer in LAYERS:
+            tiles = download_files(infer_date, layer, bounding_box)
+            for tile in tiles:
+                tile_name = tile.replace('.tif', '_scaled.tif')
+                all_tiles.append(tile_name)
 
     start_time = time.time()
     mosaic = []
@@ -160,7 +164,7 @@ def infer(model_id, infer_date, bounding_box):
             profiles = list()
             with torch.no_grad():
                 for tiles in batch(all_tiles):
-                    batch_results, batch_profiles = inference.infer(tiles)
+                    batch_results, batch_profiles = inference.infer(tiles, terramind)
                     results.extend(batch_results)
                     profiles.extend(batch_profiles)
             memory_files = list()
@@ -210,7 +214,13 @@ async def infer_from_model(request: Request):
     model_id = USECASE
     infer_date = instances['date']
     bounding_box = instances['bounding_box']
-    final_geojson = infer(model_id, infer_date, bounding_box)
+    final_geojson = infer(
+            model_id,
+            infer_date,
+            bounding_box,
+            terramind=instances.get('terramind', False),
+            file_links=instances.get('file_urls', [])
+        )
     return JSONResponse(content=jsonable_encoder(final_geojson))
 
 @app.get('/ping')
