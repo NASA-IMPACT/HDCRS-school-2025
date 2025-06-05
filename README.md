@@ -5,9 +5,10 @@ This repository includes contents for the Third and Fourth day of the HDCRS Scho
 
 Each day have their own set of notebooks. They are tuned to run in an AWS Sagemaker environment. If you want to run these in any other environments, you can refer to the [HDCRS School 2025 materials](https://github.com/NASA-IMPACT/HDCRS-school-2025/)
 
-# Slides:
+# Slides
 
 # Prerequisites
+
 1. Basic understanding of git
 2. Python and jupyter environment knowledge
 3. Basic understanding of docker
@@ -16,6 +17,7 @@ Each day have their own set of notebooks. They are tuned to run in an AWS Sagema
 6. Some understanding of Geo-spatial datasets.
 
 # Getting started
+
 1. Navigate to [Login URL](https://workshop-domain-18o42qsn.auth.us-west-2.amazoncognito.com/login?client_id=52hsk1da3id6stl0gr2r5rh2as&response_type=code&scope=aws.cognito.signin.user.admin+openid+profile&redirect_uri=https://5la25j1n53.execute-api.us-west-2.amazonaws.com/invoke)
 2. Log in using the credential provided
 ![Login with username and password](images/login-1.png)
@@ -32,11 +34,12 @@ Each day have their own set of notebooks. They are tuned to run in an AWS Sagema
 ![Open](/images/workshop-jypyterlab-app-list.png)
 ![Jupyterlab Environment](/images/jupyter-lab-home-page.png)
 
-
 # Environment setup
+
 The following steps are to be followed if the `HDCRS-school-2025` folder is not available in your jupyterlab environment. If it is already available skip to 2.
 
 1. Clone this repository `git clone https://github.com/nasa-impact/HDCRS-school-2025.git`
+
 ```
 a. Click `git`
 b. Click on `Git Clone Repo`
@@ -60,19 +63,18 @@ e. Open python terminal: `python`
 
 f. Import torch: `import torch`
 
-
-
-
 <code style="color : red">Run the following only if there are issues with the conda environments</code>
 
 If there are any issues with the environments, conda environments might need to be removed and reinstalled via the terminal:
+
 ```
 conda activate base
 conda remove -n prithvi_eo --all -y
-conda remove -n prithvi_wx --all -y
+conda remove -n terramind --all -y
 
 source /home/sagemaker/HDCRS-school-2025/setup/setup.sh
 ```
+
 [Please check the environment once the environments are set.](#environment-setup)
 
 **Notebooks are available for each day which can be ran in the sagemaker environment.**
