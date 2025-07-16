@@ -16,8 +16,7 @@ spec:
     spec:
       containers:
         - name: hdcrs-container
-          image: hdcrs:latest
-          imagePullPolicy: IfNotPresent
+          image: 244822573120.dkr.ecr.us-west-2.amazonaws.com/hdcrs:latest
           ports:
             - containerPort: 8080
           volumeMounts:
