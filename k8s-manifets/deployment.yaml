@@ -23,6 +23,9 @@ spec:
           volumeMounts:
             - name: cache-volume
               mountPath: /root/.cache
+          env:
+          - name: BUCKET_NAME
+            value: "r2o-models"
       volumes:
         - name: cache-volume
           persistentVolumeClaim:
