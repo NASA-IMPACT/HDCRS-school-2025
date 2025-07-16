@@ -9,7 +9,7 @@ docker login --password-stdin --username AWS $ECR_URL
 
 # docker push $ECR_URL/eo_training:latest
 
-docker buildx build -f Dockerfile.inference --platform linux/amd64 -t $ECR_URL/$ECR_IMAGE_NAME
+docker buildx build -f Dockerfile.inference --platform linux/amd64 -t $ECR_URL/$ECR_IMAGE_NAME .
 
 
 docker push $ECR_URL/$ECR_IMAGE_NAME
