@@ -27,7 +27,12 @@ from shapely.geometry import shape
 
 
 
-app = FastAPI()
+app = FastAPI(
+    title="hdcrs r2o",
+    description="weather model for hdcrs",
+    version="1.0.1",
+)
+api_router = FastAPI(prefix="/hdcrs/api")
 
 CONFIG_FILENAME = os.environ.get('S3_CONFIG_FILENAME')
 CHECKPOINT_FILE = os.environ.get('CHECKPOINT_FILENAME')
@@ -203,7 +208,7 @@ def infer(model_id, infer_date, bounding_box, terramind=False, file_links=[]):
         model_id: {'s3_link': s3_link, 'predictions': geojson}
     }
 
-@app.post('/invocations')
+@api_router.post('/invocations')
 async def infer_from_model(request: Request):
     instances = await request.json()
     if instances.get('generation'):
@@ -219,6 +224,8 @@ async def infer_from_model(request: Request):
     final_geojson = infer(model_id, infer_date, bounding_box, terramind=terramind, file_links=file_links)
     return JSONResponse(content=jsonable_encoder(final_geojson))
 
-@app.get('/ping')
+@api_router.get('/ping')
 async def ping(request: Request):
     return { 'successCode': 200, 'message': 'pong'}
+
+app.mount("/hdcrs/api", api_router)

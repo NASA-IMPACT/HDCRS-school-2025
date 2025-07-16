@@ -13,3 +13,5 @@ docker buildx build -f Dockerfile.inference --platform linux/amd64 -t $ECR_URL/$
 
 
 docker push $ECR_URL/$ECR_IMAGE_NAME
+
+kind load docker-image $ECR_URL/$ECR_IMAGE_NAME --name neo-cluster
