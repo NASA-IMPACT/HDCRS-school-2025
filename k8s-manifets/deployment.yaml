@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: hdcrs-app
   labels:
-    app: hdcrs
+    app: hdcrs-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hdcrs
+      app: hdcrs-app
   template:
     metadata:
       labels:
-        app: hdcrs
+        app: hdcrs-app
     spec:
       containers:
         - name: hdcrs-container
