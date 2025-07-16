@@ -3,9 +3,16 @@ kind: Ingress
 metadata:
   name: hdcrs-ingress
   namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
+  tls:
+  - hosts:
+    - kind.neo.nsstc.uah.edu
+    secretName: ingress-tls
   rules:
-  - http:
+  - host: kind.neo.nsstc.uah.edu
+    http:
       paths:
       - path: /hdcrs/api
         pathType: Prefix
@@ -14,4 +21,4 @@ spec:
             name: hdcrs-service
             port:
               number: 443
-    
+
