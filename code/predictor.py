@@ -220,7 +220,6 @@ async def infer_from_model(request: Request):
     bounding_box = instances.get('bounding_box')
     terramind = instances.get('terramind', False)
     file_links = instances.get('file_urls', [])
-    print(instances)
     final_geojson = infer(model_id, infer_date, bounding_box, terramind=terramind, file_links=file_links)
     return JSONResponse(content=jsonable_encoder(final_geojson))
 

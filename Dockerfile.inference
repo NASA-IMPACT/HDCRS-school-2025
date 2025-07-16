@@ -42,4 +42,9 @@ ENV PATH="/opt/program:${PATH}"
 # Copies code under /opt/ml/code where sagemaker-containers expects to find the script to run
 WORKDIR /opt/program
 
-CMD ["serve"]
+COPY main.py /app
+
+EXPOSE 8080
+
+CMD ["uvicorn", "predictor:app", "--host", "0.0.0.0", "--port", "8080"]
+
