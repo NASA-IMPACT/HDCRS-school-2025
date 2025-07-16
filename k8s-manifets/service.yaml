@@ -6,7 +6,7 @@ spec:
   selector:
     app: hdcrs-app
   ports:
-  - port: 80
+  - port: 443
     targetPort: 8080
   type: ClusterIP
 
