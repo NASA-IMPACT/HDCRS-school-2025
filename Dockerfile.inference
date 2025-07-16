@@ -10,7 +10,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y software-properties-common && \
     add-apt-repository -y ppa:deadsnakes/ppa && \
-    aapt-get update
+    apt-get update
 
 RUN apt-get update && apt-get install -y libgl1 python3-pip python3-dev nginx git libgdal-dev --fix-missing
 
