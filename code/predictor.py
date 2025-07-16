@@ -6,10 +6,8 @@ import geopandas as gpd
 import rasterio
 import time
 import torch
-import yaml
 
 from fastapi import FastAPI, Request
-from fastapi import FastAPI, status, Request, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
@@ -26,9 +24,7 @@ from rio_cogeo.cogeo import cog_translate
 from rio_cogeo.profiles import cog_profiles
 
 from shapely.geometry import shape
-from skimage.morphology import disk, binary_closing
 
-from starlette.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
@@ -58,7 +54,7 @@ def load_model():
     infer = Infer(config_file_path, model_weights_path)
     return { USECASE: infer }
 
-MODELS = load_model()
+
 
 
 def download_files(infer_date, layer, bounding_box):
@@ -137,10 +133,11 @@ def batch(tiles, spacing=60):
 
 
 def infer(model_id, infer_date, bounding_box, terramind=False, file_links=[]):
-    if model_id not in MODELS:
+    models = load_model()
+    if model_id not in models:
         response = {'statusCode': 422}
         return JSONResponse(content=jsonable_encoder(response))
-    inference = MODELS[model_id]
+    inference = models[model_id]
     all_tiles = list()
     geojson_list = list()
     geojson = {'type': 'FeatureCollection', 'features': []}

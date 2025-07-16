@@ -2,7 +2,7 @@ import boto3
 import os
 from os import path
 from glob import glob
-from consts import BUCKET_NAME
+from lib.consts import BUCKET_NAME
 
 MODEL_PATH = "models/{model_name}"
 

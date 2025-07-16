@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hdcrs-app
+  labels:
+    app: hdcrs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hdcrs
+  template:
+    metadata:
+      labels:
+        app: hdcrs
+    spec:
+      containers:
+        - name: hdcrs-container
+          image: hdcrs:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: cache-volume
+              mountPath: /root/.cache
+      volumes:
+        - name: cache-volume
+          persistentVolumeClaim:
+            claimName: hdcrs-cache-pvc
