@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: hdcrs-container
-          image: hdcrs:1.0.0
+          image: hdcrs:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
