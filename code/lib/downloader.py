@@ -22,8 +22,7 @@ TILE_URL = {
 PROJECTION = "WebMercatorQuad"
 TMS = morecantile.tms.get(PROJECTION)
 ZOOM_LEVEL = 12
-DOWNLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "../data")
-
+DOWNLOAD_FOLDER = os.environ.get("DOWNLOAD_FOLDER", '/root/.cache/')
 
 
 WIDTH, HEIGHT = (224, 224)
@@ -102,21 +101,34 @@ class Downloader:
 
     def download_tiles(self, bounding_box):
         x_tiles, y_tiles = self.tile_indices(bounding_box)
-        downloaded_files = list()
         tile_infos = list()
+        cached_files = list()
         for x_index in range(x_tiles[0], x_tiles[1] + 1):
             for y_index in range(y_tiles[0], y_tiles[1] + 1):
                 self.mkdir(f"{DOWNLOAD_FOLDER}/{self.layer}")
                 filename = f"{DOWNLOAD_FOLDER}/{self.layer}/{self.date}-{x_index}-{y_index}.tif"
-                tile_infos.append((x_index, y_index, filename))
+                if os.path.exists(filename) or os.path.exists(filename.replace('HLSL30', 'HLSS30')) or os.path.exists(filename.replace('HLSS30', 'HLSL30')):
+                    if os.path.exists(filename.replace('HLSL30', 'HLSS30')):
+                        filename = filename.replace('HLSL30', 'HLSS30')
+                    elif os.path.exists(filename.replace('HLSS30', 'HLSL30')):
+                        filename = filename.replace('HLSS30', 'HLSL30')
+                    cached_files.append(filename)
+                    continue_download = False
+                    continue
+                else:
+                    tile_infos.append((x_index, y_index, filename))
         # parallelize download here
-        pool = Pool(cpu_count() - 1)
-        downloaded_files = pool.starmap(self.download_tile, tile_infos)
-        downloaded_files = [
-            downloaded_file for downloaded_file in downloaded_files if downloaded_file
-        ]
-        pool.close()
-        pool.join()
+        if len(tile_infos) == 0:
+            downloaded_files = cached_files
+        else:
+            pool = Pool(8)
+            downloaded_files = pool.starmap(self.download_tile, tile_infos)
+            downloaded_files = [
+                downloaded_file for downloaded_file in downloaded_files if downloaded_file
+            ]
+            pool.close()
+            pool.join()
+            downloaded_files.extend(cached_files)
         return downloaded_files
 
     def register_new_search(self):
