@@ -22,7 +22,8 @@ TILE_URL = {
 PROJECTION = "WebMercatorQuad"
 TMS = morecantile.tms.get(PROJECTION)
 ZOOM_LEVEL = 12
-DOWNLOAD_FOLDER = os.environ.get("DOWNLOAD_FOLDER", '/root/.cache/')
+DOWNLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "../data")
+
 
 
 WIDTH, HEIGHT = (224, 224)
@@ -101,6 +102,7 @@ class Downloader:
 
     def download_tiles(self, bounding_box):
         x_tiles, y_tiles = self.tile_indices(bounding_box)
+        downloaded_files = list()
         tile_infos = list()
         cached_files = list()
         for x_index in range(x_tiles[0], x_tiles[1] + 1):
