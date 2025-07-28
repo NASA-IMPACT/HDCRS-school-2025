@@ -18,7 +18,7 @@ Each day have their own set of notebooks. They are tuned to run in an AWS Sagema
 
 # Getting started
 
-1. Navigate to [Login URL](https://workshop-domain-18o42qsn.auth.us-west-2.amazoncognito.com/login?client_id=52hsk1da3id6stl0gr2r5rh2as&response_type=code&scope=aws.cognito.signin.user.admin+openid+profile&redirect_uri=https://5la25j1n53.execute-api.us-west-2.amazonaws.com/invoke)
+1. Navigate to [Login URL](https://workshop-domain-1etw46yx.auth.us-west-2.amazoncognito.com/login?client_id=5vh3l4mekphu1oqj8s87au2s1a&response_type=code&scope=aws.cognito.signin.user.admin+openid+profile&redirect_uri=https://w9zxxt2d4a.execute-api.us-west-2.amazonaws.com/invoke)
 2. Log in using the credential provided
 ![Login with username and password](images/login-1.png)
 3. Once the Studio starts, Click on JupyterLab
