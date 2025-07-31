@@ -15,7 +15,7 @@ class Infer:
 
     def load_model(self):
         inference_model = LightningInferenceModel.from_config(self.config_filename, self.checkpoint_filename)
-        self.model = inference_model.model
+        self.model = inference_model.model.to('cuda')
 
         # load model using terratorch
         self.model = self.model.eval()
