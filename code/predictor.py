@@ -106,7 +106,7 @@ def save_cog(mosaic, profile, transform, filename):
 def post_process(detections, transform):
     contours, shape = PostProcess.prepare_contours(detections)
     detections = PostProcess.extract_shapes(detections, contours, transform, shape)
-    detections = PostProcess.remove_intersections(detections)
+    # detections = PostProcess.remove_intersections(detections)
     return PostProcess.convert_to_geojson(detections)
 
 
