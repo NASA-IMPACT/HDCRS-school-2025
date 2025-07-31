@@ -4,4 +4,5 @@ gdown
 tensorboard
 sagemaker
 huggingface_hub
+ipyleaflet
 sagemaker-training
