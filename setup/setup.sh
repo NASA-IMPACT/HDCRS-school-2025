@@ -124,6 +124,10 @@ main() {
         fi
     done
 
+    jupyter labextension install jupyter-leaflet
+
+    jupyter lab build
+
     log "Workshop environment setup completed successfully"
     return 0
 }
