@@ -28,7 +28,7 @@ Each day have their own set of notebooks. They are tuned to run in an AWS Sagema
 5. Click `Create JupyterLab Space`
 ![JupyterLab spaces](images/create-jupyterlab-env.png)
 6. Give it a name. Eg: `Workshop`
-7. Once initialized, change Instance type to `ml.p3.2xlarge` and storage to `150`
+7. Once initialized, change Instance type to `ml.t3.2xlarge` and storage to `150`
 8. Click on `Run Space`. If it throws an error, you might have to pick an Image. The top setting called `Latest` works.
 9. If a space is already running, click on "open". This should open a new tab with the jupyterlab environment.
 ![Open](/images/workshop-jypyterlab-app-list.png)
