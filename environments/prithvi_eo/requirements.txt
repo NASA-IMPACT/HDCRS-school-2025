@@ -5,4 +5,5 @@ tensorboard
 sagemaker
 huggingface_hub
 ipyleaflet
+rasterio
 sagemaker-training
